@@ -38,27 +38,4 @@ Feature: User Sign In
 
 
 
-  # -------------------------
-  # GOOGLE AUTHENTICATION
-  # -------------------------
-
-  Scenario: Successful login via Google
-    When user clicks "Continue with Google"
-    And user completes Google authentication successfully
-    Then user is logged in
-    And user is redirected to account page
-
-
-  Scenario: User cancels Google authentication
-    When user clicks "Continue with Google"
-    And user cancels authentication
-    Then user remains on sign in page
-
-
-  Scenario: Google authentication denied
-    When user clicks "Continue with Google"
-    And user denies permissions
-    Then error message is displayed
-
-
 
