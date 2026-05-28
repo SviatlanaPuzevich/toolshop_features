@@ -100,3 +100,15 @@ Feature: Product Details Page
     Given product is already added to comparison
     When user clicks "Compare"
     Then error message is displayed
+
+
+  # -------------------------
+  # OUT OF STOCK PRODUCTS
+  # -------------------------
+
+  Scenario: Out of stock product cannot be added to basket
+    Given product is out of stock
+    When user opens product details page
+    Then quantity increase button is disabled
+    And quantity decrease button is disabled
+    And "Add to basket" button is disabled
