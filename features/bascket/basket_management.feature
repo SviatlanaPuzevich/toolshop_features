@@ -1,4 +1,3 @@
-```gherkin id="5u3q5w"
 Feature: Basket Management
 
   Background:
