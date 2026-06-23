@@ -57,14 +57,6 @@ class RegistrationPage extends BasePage {
     return $('button[type="submit"]');
   }
 
-  getError(fieldId: string) {
-    return $(`[data-test="${fieldId}-error"]`);
-  }
-
-  getErrorElementById(fieldId: string) {
-    return $(`#${fieldId}-error`);
-  }
-
   getField(name: string) {
     const fields = {
       first_name: this.firstName,
@@ -94,7 +86,7 @@ class RegistrationPage extends BasePage {
     }
   }
 
-  async fillValidForm(password = 'tP9$mX2!vK8#qZ5[') {
+  async fillValidForm(password = 'tP9$mX2!vK8#qZ5[', email: string | undefined = '') {
     await this.firstName.setValue('John');
     await this.lastName.setValue('Doe');
     await this.dob.setValue('1990-01-01');
@@ -105,7 +97,7 @@ class RegistrationPage extends BasePage {
     await this.state.setValue('Vilnius');
     await this.country.selectByVisibleText('Lithuania');
     await this.phone.setValue('37061234567');
-    await this.email.setValue(`john${Date.now()}@mail.com`);
+    await this.email.setValue(email || `john${Date.now()}@mail.com`);
     await this.password.setValue(password);
   }
 

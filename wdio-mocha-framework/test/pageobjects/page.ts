@@ -12,4 +12,16 @@ export default class Page {
   public open(path: string) {
     return browser.url(`https://practicesoftwaretesting.com/${path}`);
   }
+
+  public getError(fieldId: string) {
+    return $(`[data-test="${fieldId}-error"]`);
+  }
+
+  public getErrorElementById(fieldId: string) {
+    return $(`#${fieldId}-error`);
+  }
+
+  public getElementByDataTestAttribute(attribute: string) {
+    return $(`[data-test="${attribute}"]`);
+  }
 }
