@@ -8,6 +8,7 @@
     "format": "prettier --write ."
   },
   "devDependencies": {
+    "@types/chai": "^5.2.3",
     "@types/mocha": "^10.0.10",
     "@types/node": "^25.9.3",
     "@wdio/cli": "^9.28.0",
@@ -21,5 +22,8 @@
     "expect-webdriverio": "^5.6.8",
     "prettier": "^3.8.4",
     "typescript-eslint": "^8.61.1"
+  },
+  "dependencies": {
+    "chai": "^6.2.2"
   }
 }
