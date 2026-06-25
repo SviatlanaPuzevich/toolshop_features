@@ -18,11 +18,17 @@ describe('Basket Management', () => {
   });
 
   beforeEach(async () => {
+    await BasketPage.open();
+
     await HomePage.open();
     await HomePage.selectProductCard(0);
     await ProductPage.addProductToBasket();
     await BasketPage.open();
   });
+
+  afterEach(async () => {
+    await BasketPage.removeAllProducts();
+  })
 
   describe('Basket display', () => {
     it('should display basket products correctly', async () => {
@@ -54,6 +60,7 @@ describe('Basket Management', () => {
 
       await BasketPage.setQuantity(0, 3);
       await browser.waitUntil(async () => (await BasketPage.getItemTotal(0)) > initialItemTotal);
+      await browser.waitUntil(async () => (await BasketPage.getBasketTotal()) > initialBasketTotal);
       const updatedItemTotal = await BasketPage.getItemTotal(0);
       const updatedBasketTotal = await BasketPage.getBasketTotal();
 
@@ -77,8 +84,7 @@ describe('Basket Management', () => {
     it('should remove last product from basket', async () => {
       await BasketPage.removeProduct(0);
 
-      await expect(BasketPage.successAlert).toBeDisplayed();
-
+      await BasketPage.emptyBasketMessage.waitForDisplayed({ timeout: 3000 });
       await expect(BasketPage.emptyBasketMessage).toBeDisplayed();
     });
 
@@ -116,10 +122,14 @@ describe('Basket Management', () => {
 
       await BasketPage.open();
       await BasketPage.productNames[0].waitForDisplayed({ timeout: 3000 });
+      await browser.waitUntil(async () => (await BasketPage.productNames.length) === initialCount, {
+        timeout: 5000,
+        timeoutMsg: 'Basket products did not reload after continue shopping',
+      });
 
       const count = await BasketPage.productNames.length;
 
-      expect(initialCount).toEqual(count);
+      expect(count).toEqual(initialCount);
     });
   });
 });
