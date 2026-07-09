@@ -1,5 +1,6 @@
 import {test, expect} from '../fixtures/registerFixture';
 import {CatalogPage} from '../pages/CatalogPage';
+import {CategoryFilters} from "../components/CategoryFilters";
 
 test.describe('Product Categories', () => {
 
@@ -48,21 +49,21 @@ test.describe('Product Categories', () => {
     });
 
     test('should display category filters', async ({page}) => {
-
+        const categoryFilters = new CategoryFilters(page);
         await categoryPage.selectCategory('Power Tools');
 
-        await expect(categoryPage.filtersPanel).toBeVisible();
+        await expect(categoryFilters.filtersPanel).toBeVisible();
         const subFilters = page.locator('h4:has-text("By category:") + div >> ul div label');
         expect(await subFilters.count()).toBeGreaterThan(0);
     });
 
     test('should update filters after category change', async ({page}) => {
-
+        const categoryFilters = new CategoryFilters(page);
         await categoryPage.selectCategory('Power Tools');
-        const firstFilters = await categoryPage.subfiltersCount();
+        const firstFilters = await categoryFilters.subfiltersCount();
         await categoryPage.selectCategory('Hand Tools');
         await page.waitForLoadState('networkidle');
-        const secondFilters = await categoryPage.subfiltersCount();
+        const secondFilters = await categoryFilters.subfiltersCount();
 
 
         expect(secondFilters).toBeGreaterThan(0);

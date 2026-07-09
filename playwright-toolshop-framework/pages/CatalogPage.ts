@@ -1,4 +1,4 @@
-import {Locator, Page, expect} from '@playwright/test';
+import {expect, Page} from '@playwright/test';
 
 export class CatalogPage {
 
@@ -9,8 +9,7 @@ export class CatalogPage {
     readonly categoryOptions = this.page.locator('[data-test="nav-categories"] + ul li');
     readonly productCards = this.page.locator('.card');
     readonly productNames = this.page.locator('[data-test="product-name"]');
-    readonly filtersPanel = this.page.locator('h4:has-text("By category:") + div.checkbox');
-    readonly subFilters = this.page.locator('//h4[contains(text(), \'By category:\')]/following-sibling::div[1]//ul//div');
+
 
     async open() {
         await this.page.goto('/');
@@ -41,13 +40,5 @@ export class CatalogPage {
 
     async productCount() {
         return this.productCards.count();
-    }
-
-    async hasFilters() {
-        return this.filtersPanel.isVisible();
-    }
-
-    async subfiltersCount() {
-        return this.subFilters.count();
     }
 }
