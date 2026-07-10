@@ -41,4 +41,8 @@ export class CatalogPage {
     async productCount() {
         return this.productCards.count();
     }
+
+    async selectFirstCard(){
+        await this.productCards.first().click();
+    }
 }

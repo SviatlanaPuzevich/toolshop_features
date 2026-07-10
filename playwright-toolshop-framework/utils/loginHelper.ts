@@ -27,3 +27,7 @@ export function generateStrongPassword(length: number = 12): string {
 
     return passwordArray.join('');
 }
+
+export function generateEmail() {
+    return `user${Date.now()}@mail.com`;
+}

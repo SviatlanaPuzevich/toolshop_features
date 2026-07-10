@@ -1,17 +1,16 @@
-import {test as base} from '@playwright/test';
 import {RegisterPage} from '../pages/RegisterPage';
 import {LoginPage} from '../pages/LoginPage';
 import {User} from '../types/types';
-import {generateStrongPassword} from '../utils/passwordHelper';
+import {generateEmail, generateStrongPassword} from '../utils/loginHelper';
 
-type RegisterFixtures = {
+export type RegisterFixtures = {
     registeredUser: User;
     loggedInUser: User;
 };
 
-export const test = base.extend<RegisterFixtures>({
-    registeredUser: async ({page}, use) => {
-        const email = `user${Date.now()}@mail.com`;
+ export const registerFixtures = {
+    registeredUser: async ({ page }, use) => {
+        const email = generateEmail();
         const password = generateStrongPassword(8);
 
         const registerPage = new RegisterPage(page);
@@ -31,6 +30,6 @@ export const test = base.extend<RegisterFixtures>({
 
         await use(registeredUser);
     },
-});
+};
 
 export {expect} from '@playwright/test';
