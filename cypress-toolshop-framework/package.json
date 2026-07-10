@@ -1,0 +1,19 @@
+{
+  "name": "cypress-toolshop-framework",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test:chrome": "cypress run --headless --browser chrome",
+    "test:firefox": "cypress run --headless --browser firefox",
+    "test:edge": "cypress run --headless --browser edge",
+    "test:all": "npm run test:chrome && npm run test:firefox && npm run test:edge"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "cypress": "^15.18.1"
+  }
+}
