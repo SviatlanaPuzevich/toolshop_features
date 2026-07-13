@@ -1,4 +1,4 @@
-import {test, expect} from '../fixtures/registerFixture';
+import {test, expect} from '@playwright/test';
 import {CatalogPage} from '../pages/CatalogPage';
 import {CategoryFilters} from "../components/CategoryFilters";
 

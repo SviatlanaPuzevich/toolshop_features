@@ -17,6 +17,9 @@ export type RegisterFixtures = {
         await registerPage.open();
         await registerPage.fillValidForm(password, email);
         await registerPage.submit();
+        // Wait for registration to actually complete (redirect to login) before the
+        // user is used, otherwise the account may not exist yet when we sign in.
+        await page.waitForURL(/.*\/auth\/login/, {timeout: 10000});
 
         const user = {email, password};
         await use(user);

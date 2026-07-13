@@ -8,7 +8,7 @@ export class CheckoutPage extends BasePage{
     }
 
     readonly proceedButton =this.page.getByRole('button', {name: /Proceed to checkout/i});
-    readonly checkoutMessage = this.page.locator('p:has-text("You can proceed to checkout.")');
+    readonly checkoutMessage = this.page.getByText('already logged in');
     readonly guestMessage = this.page.locator('p:has-text("Continuing as guest:")');
     readonly guestTab = this.page.locator('a[href="#guest-tab"]');
 

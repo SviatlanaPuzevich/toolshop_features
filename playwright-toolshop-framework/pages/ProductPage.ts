@@ -4,6 +4,7 @@ import BasePage from "./BasePage";
 export class ProductPage extends BasePage {
     readonly addToCartButton = this.page.locator('[data-test="add-to-cart"]');
     readonly productDescription = this.page.locator('[data-test="product-description"]');
+    readonly cartQuantity = this.page.locator('[data-test="cart-quantity"]');
 
     constructor(page: Page) {
         super(page);
@@ -13,7 +14,10 @@ export class ProductPage extends BasePage {
         await this.productDescription.waitFor({ state: 'visible' });
     }
 
-    async addToCart(){
+    async addToCart() {
         await this.addToCartButton.click();
+        // Wait for the item to be persisted (nav cart badge updates) before navigating
+        // away, otherwise the checkout page loads with an empty cart.
+        await this.cartQuantity.waitFor({ state: 'visible' });
     }
 }

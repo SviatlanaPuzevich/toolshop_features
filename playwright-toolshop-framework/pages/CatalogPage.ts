@@ -7,7 +7,9 @@ export class CatalogPage {
 
     readonly categorySelect = this.page.locator('[data-test="nav-categories"]');
     readonly categoryOptions = this.page.locator('[data-test="nav-categories"] + ul li');
-    readonly productCards = this.page.locator('.card');
+    // The catalog renders `div.card.skeleton` placeholders while products load;
+    // exclude them so we only match (and click) real product cards.
+    readonly productCards = this.page.locator('.card:not(.skeleton)');
     readonly productNames = this.page.locator('[data-test="product-name"]');
 
 

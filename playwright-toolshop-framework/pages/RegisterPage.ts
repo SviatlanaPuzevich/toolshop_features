@@ -59,6 +59,9 @@ export class RegisterPage extends BasePage{
     async clearField(name: string) {
         const field = this.getField(name);
         await field.fill('');
+        // Blur so Angular marks the control as touched and renders the required-field
+        // error reliably across browsers, instead of depending on post-submit timing.
+        await field.blur();
     }
 
     async fillValidForm(password = 'tP9$mX2!vK8#qZ5[', email: string | undefined = '') {
