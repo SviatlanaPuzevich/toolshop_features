@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
     "test:chrome": "cypress run --headless --browser chrome",
     "test:firefox": "cypress run --headless --browser firefox",
     "test:edge": "cypress run --headless --browser edge",
@@ -12,7 +14,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "devDependencies": {
     "cypress": "^15.18.1"
   }
