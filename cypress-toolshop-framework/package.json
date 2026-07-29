@@ -4,6 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "npx prettier . --write",
+    "format:check": "prettier . --check",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
     "test:chrome": "cypress run --headless --browser chrome",
@@ -16,6 +20,10 @@
   "license": "ISC",
   "type": "module",
   "devDependencies": {
-    "cypress": "^15.18.1"
+    "@eslint/js": "^10.0.1",
+    "cypress": "^15.18.1",
+    "eslint": "^10.8.0",
+    "eslint-plugin-cypress": "^6.4.3",
+    "globals": "^17.8.0"
   }
 }
