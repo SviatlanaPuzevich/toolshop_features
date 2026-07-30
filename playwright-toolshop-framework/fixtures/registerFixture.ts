@@ -7,9 +7,15 @@ import { generateEmail, generateStrongPassword } from '../utils/loginHelper.js';
 export type RegisterFixtures = {
   registeredUser: User;
   loggedInUser: User;
+  registrationPage: RegisterPage;
 };
 
 export const test = base.extend<RegisterFixtures>({
+  registrationPage: async({page}, use) =>{
+    const registerPage = new RegisterPage(page);
+    await registerPage.open();
+    await use(registerPage);
+  },
   registeredUser: async ({ page }, use) => {
     const email = generateEmail();
     const password = generateStrongPassword(8);

@@ -1,17 +1,10 @@
-import { test, expect } from '@playwright/test';
-import { RegisterPage } from '../pages/RegisterPage.js';
+import { test, expect } from '../fixtures/registerFixture.js';
 import { getBirthDateWithOffset } from '../utils/dateHelper.js';
 
 test.describe('User Registration', () => {
-  let registrationPage: RegisterPage;
-
-  test.beforeEach(async ({ page }) => {
-    registrationPage = new RegisterPage(page);
-    await registrationPage.open();
-  });
 
   test.describe('Successful registration', () => {
-    test('should register user successfully', async ({ page }) => {
+    test('should register user successfully', async ({ page, registrationPage }) => {
       await registrationPage.fillValidForm();
       await registrationPage.submit();
 
@@ -23,7 +16,7 @@ test.describe('User Registration', () => {
     const requiredFields = ['first_name', 'last_name'];
 
     for (const field of requiredFields) {
-      test(`should validate required field ${field}`, async () => {
+      test(`should validate required field ${field}`, async ({registrationPage}) => {
         await registrationPage.fillValidForm();
         await registrationPage.clearField(field);
         await registrationPage.submit();
@@ -48,7 +41,7 @@ test.describe('User Registration', () => {
     ];
 
     for (const field of requiredFields) {
-      test(`should validate required field ${field}`, async () => {
+      test(`should validate required field ${field}`, async ({registrationPage}) => {
         await registrationPage.fillValidForm();
         await registrationPage.clearField(field);
         await registrationPage.submit();
@@ -67,7 +60,7 @@ test.describe('User Registration', () => {
     ];
 
     for (const { field, name, value } of testCases) {
-      test(`should show validation error for ${field}`, async () => {
+      test(`should show validation error for ${field}`, async ({registrationPage}) => {
         await registrationPage.fillValidForm();
 
         const inputField = registrationPage.getField(name);
@@ -92,7 +85,7 @@ test.describe('User Registration', () => {
     ];
 
     for (const { password, valid, reason } of passwordCases) {
-      test(`should validate password: ${reason}`, async ({ page }) => {
+      test(`should validate password: ${reason}`, async ({ page, registrationPage }) => {
         await registrationPage.fillValidForm(password);
         await registrationPage.submit();
 
@@ -114,7 +107,7 @@ test.describe('User Registration', () => {
     ];
 
     for (const { birthDate, valid, title } of ageCases) {
-      test(`should validate age: ${title}`, async ({ page }) => {
+      test(`should validate age: ${title}`, async ({ page, registrationPage }) => {
         await registrationPage.fillValidForm();
 
         await registrationPage.dob.fill(birthDate);

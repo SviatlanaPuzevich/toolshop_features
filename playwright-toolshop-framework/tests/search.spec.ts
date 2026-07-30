@@ -1,19 +1,9 @@
-import { expect, test } from '@playwright/test';
-import { SearchFilter } from '../components/SearchFilter.js';
-import { CatalogPage } from '../pages/CatalogPage.js';
+import { expect, test } from '../fixtures/catalogFixture.js';
 
 test.describe('Product Search', () => {
-  let catalogPage: CatalogPage;
-  let searchFilter: SearchFilter;
 
-  test.beforeEach(async ({ page }) => {
-    catalogPage = new CatalogPage(page);
-    searchFilter = new SearchFilter(page);
 
-    await catalogPage.open();
-  });
-
-  test('should search product by exact name', async () => {
+  test('should search product by exact name', async ({catalogPage, searchFilter}) => {
     await searchFilter.search('Hammer');
     await catalogPage.waitSearchResponse();
     const products = await catalogPage.getProductNames();
@@ -21,7 +11,7 @@ test.describe('Product Search', () => {
     expect(products).toContainEqual(expect.stringMatching(/hammer/i));
   });
 
-  test('should search product by partial name', async () => {
+  test('should search product by partial name', async ({catalogPage, searchFilter}) => {
     await searchFilter.search('Ham');
     await catalogPage.waitSearchResponse();
 
@@ -34,7 +24,7 @@ test.describe('Product Search', () => {
 
   test.describe('Minimum search length', () => {
     ['H', 'Ha'].forEach((query) => {
-      test(`should not trigger search for "${query}"`, async () => {
+      test(`should not trigger search for "${query}"`, async ({catalogPage, searchFilter}) => {
         await catalogPage.waitProductsLoaded();
         const initialCount = await catalogPage.productCount();
         await searchFilter.search(query);
@@ -44,7 +34,7 @@ test.describe('Product Search', () => {
     });
   });
 
-  test('should clear search results', async ({ }) => {
+  test('should clear search results', async ({catalogPage, searchFilter}) => {
     await catalogPage.waitProductsLoaded();
     const fullCatalogCount = await catalogPage.productCount();
     await searchFilter.search('Hammer');
@@ -58,14 +48,14 @@ test.describe('Product Search', () => {
     expect(await catalogPage.productCount()).toBe(fullCatalogCount);
   });
 
-  test('should display empty message for unknown product', async () => {
+  test('should display empty message for unknown product', async ({catalogPage, searchFilter}) => {
     await searchFilter.search('xxxxxxxxxxxxxxxx');
     await catalogPage.waitSearchResponse();
 
     await expect(searchFilter.emptyMessage).toBeVisible();
   });
 
-  test('should update search results dynamically', async () => {
+  test('should update search results dynamically', async ({catalogPage, searchFilter}) => {
     await searchFilter.search('Hammer');
     const firstSearch = await catalogPage.getProductNames();
 
@@ -76,7 +66,7 @@ test.describe('Product Search', () => {
     expect(firstSearch).not.toEqual(secondSearch);
   });
 
-  test('should perform case insensitive search', async () => {
+  test('should perform case insensitive search', async ({catalogPage, searchFilter}) => {
     await searchFilter.search('HAMMER');
     await catalogPage.waitSearchResponse();
 
@@ -86,7 +76,7 @@ test.describe('Product Search', () => {
     expect(products).toContainEqual(expect.stringMatching(/hammer/i));
   });
 
-  test('should display matching keyword in product names', async () => {
+  test('should display matching keyword in product names', async ({catalogPage, searchFilter}) => {
     const keyword = 'Ham';
 
     await searchFilter.search(keyword);
