@@ -1,50 +1,64 @@
-import {expect, Page} from '@playwright/test';
+import { expect, Locator, Page } from '@playwright/test';
 
 export class CatalogPage {
+  readonly categorySelect: Locator;
+  readonly categoryOptions: Locator;
+  readonly productCards: Locator;
+  readonly productNames: Locator;
+  readonly searchCountText: Locator;
 
-    constructor(private readonly page: Page) {
-    }
+  constructor(private readonly page: Page) {
+    this.categorySelect = this.page.locator('[data-test="nav-categories"]');
+    this.categoryOptions = this.page.locator('[data-test="nav-categories"] + ul li');
+    this.productCards = this.page.locator('.card:not(.skeleton)');
+    this.productNames = this.page.locator('[data-test="product-name"]');
+    this.searchCountText = this.page.locator('[data-test="search-result-count"]');
+  }
 
-    readonly categorySelect = this.page.locator('[data-test="nav-categories"]');
-    readonly categoryOptions = this.page.locator('[data-test="nav-categories"] + ul li');
-    // The catalog renders `div.card.skeleton` placeholders while products load;
-    // exclude them so we only match (and click) real product cards.
-    readonly productCards = this.page.locator('.card:not(.skeleton)');
-    readonly productNames = this.page.locator('[data-test="product-name"]');
+  async open() {
+    await this.page.goto('/');
+  }
 
+  async openCategories() {
+    await this.categorySelect.click();
+  }
 
-    async open() {
-        await this.page.goto('/');
-    }
+  async selectCategory(category: string) {
+    await this.openCategories();
+    const categoriesList = this.page.locator('[data-test="nav-categories"] + ul a');
+    await categoriesList.getByText(category, { exact: true }).click();
+  }
 
-    async openCategories() {
-        await this.categorySelect.click();
-    }
+  async getAvailableCategories() {
+    await this.openCategories();
+    return this.categoryOptions.allTextContents();
+  }
 
-    async selectCategory(category: string) {
-        await this.openCategories();
-        const categoriesList = this.page.locator('[data-test="nav-categories"] + ul a');
-        await categoriesList.getByText(category, {exact: true}).click({ force: true });
-    }
+  async getProductNames() {
+    return this.productNames.allTextContents();
+  }
 
-    async getAvailableCategories() {
-        await this.openCategories();
-        return this.categoryOptions.allTextContents();
-    }
+  async waitProductsLoaded() {
+    await expect(this.productCards.first()).toBeVisible();
+  }
 
-    async getProductNames() {
-        return this.productNames.allTextContents();
-    }
+  async productCount() {
+    return this.productCards.count();
+  }
 
-    async waitProductsLoaded() {
-        await expect(this.productCards.first()).toBeVisible();
-    }
+  async selectFirstCard() {
+    await this.productCards.first().click();
+  }
 
-    async productCount() {
-        return this.productCards.count();
-    }
+  async waitSearchResponse() {
+    return this.page.waitForResponse(
+      (response) => response.url().includes('/products/search') && response.status() === 200,
+    );
+  }
 
-    async selectFirstCard(){
-        await this.productCards.first().click();
-    }
+  async waitLoadedCatalogResponse() {
+    return this.page.waitForResponse(
+      (response) => response.url().endsWith('/products') && response.status() === 200,
+    );
+  }
 }

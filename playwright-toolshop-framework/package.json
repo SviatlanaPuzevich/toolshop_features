@@ -7,14 +7,25 @@
     "test": "npx playwright test",
     "test:headed": "npx playwright test --headed",
     "test:ui": "npx playwright test --ui",
-    "test:report": "npx playwright show-report"
+    "test:report": "npx playwright show-report",
+    "report": "playwright show-report",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.61.1",
-    "@types/node": "^26.1.0"
+    "@types/node": "^26.1.0",
+    "eslint": "^10.8.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-playwright": "^2.11.0",
+    "prettier": "^3.9.6",
+    "typescript-eslint": "^8.65.0"
   }
 }

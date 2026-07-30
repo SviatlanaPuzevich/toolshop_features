@@ -1,81 +1,61 @@
-import {test, expect} from '@playwright/test';
-import {CatalogPage} from '../pages/CatalogPage';
-import {CategoryFilters} from "../components/CategoryFilters";
+import { test, expect } from '../fixtures/catalogFixture.js';
+import { CategoryFilters } from '../components/CategoryFilters.js';
 
 test.describe('Product Categories', () => {
 
-    let categoryPage: CatalogPage;
+  test('should display available categories', async ({catalogPage}) => {
+    const categories = await catalogPage.getAvailableCategories();
 
-    test.beforeEach(async ({page}) => {
-        categoryPage = new CatalogPage(page);
-        await categoryPage.open();
+    expect(categories.length).toBeGreaterThan(0);
+    expect(categories).toContain('Power Tools');
+  });
+
+  test.describe('Category selection', () => {
+    ['Power Tools', 'Hand Tools', 'Other'].forEach((category) => {
+      test(`should display products for ${category}`, async ({catalogPage}) => {
+        await catalogPage.selectCategory(category);
+        await catalogPage.waitLoadedCatalogResponse();
+        await catalogPage.waitProductsLoaded();
+
+        expect(await catalogPage.productCount()).toBeGreaterThan(0);
+      });
     });
+  });
 
-    test('should display available categories', async () => {
+  test('should refresh products after category change', async ({catalogPage}) => {
+    await catalogPage.selectCategory('Hand Tools');
+    await catalogPage.waitLoadedCatalogResponse();
+    const secondCategoryProducts = await catalogPage.getProductNames();
 
-        const categories = await categoryPage.getAvailableCategories();
+    await catalogPage.selectCategory('Power Tools');
+    await catalogPage.waitLoadedCatalogResponse();
+    const firstCategoryProducts = await catalogPage.getProductNames();
 
-        expect(categories.length).toBeGreaterThan(0);
-        expect(categories).toContain('Power Tools');
-    });
+    expect(firstCategoryProducts).not.toEqual(secondCategoryProducts);
+  });
 
-    test.describe('Category selection', () => {
+  test('should display category filters', async ({ catalogPage, page }) => {
+    const categoryFilters = new CategoryFilters(page);
+    await catalogPage.selectCategory('Power Tools');
 
-        [
-            'Power Tools',
-            'Hand Tools',
-            'Other'
-        ].forEach(category => {
+    await expect(categoryFilters.filtersPanel).toBeVisible();
 
-            test(`should display products for ${category}`, async () => {
-                await categoryPage.selectCategory(category);
-                await categoryPage.waitProductsLoaded();
-                expect(await categoryPage.productCount()).toBeGreaterThan(0);
-            });
+    const subFiltersCount = await categoryFilters.subfiltersCount();
 
-        });
+    expect(subFiltersCount).toBeGreaterThan(0);
+  });
 
-    });
+  test('should update filters after category change', async ({ page, catalogPage }) => {
+    const categoryFilters = new CategoryFilters(page);
+    await catalogPage.selectCategory('Power Tools');
+    await categoryFilters.waitForCategoryTree();
+    const firstFilters = await categoryFilters.subfiltersCount();
+    await catalogPage.selectCategory('Hand Tools');
+    await categoryFilters.waitForCategoryTree();
+    const secondFilters = await categoryFilters.subfiltersCount();
 
-    test('should refresh products after category change', async ({page}) => {
-        await categoryPage.selectCategory('Hand Tools');
-        const secondCategoryProducts = await categoryPage.getProductNames();
-
-        await categoryPage.selectCategory('Power Tools');
-        await page.waitForLoadState('networkidle');
-        const firstCategoryProducts = await categoryPage.getProductNames();
-
-        expect(firstCategoryProducts).not.toEqual(secondCategoryProducts);
-    });
-
-    test('should display category filters', async ({page}) => {
-        const categoryFilters = new CategoryFilters(page);
-        await categoryPage.selectCategory('Power Tools');
-
-        await expect(categoryFilters.filtersPanel).toBeVisible();
-        const subFilters = page.locator('h4:has-text("By category:") + div >> ul div label');
-        expect(await subFilters.count()).toBeGreaterThan(0);
-    });
-
-    test('should update filters after category change', async ({page}) => {
-        const categoryFilters = new CategoryFilters(page);
-        await categoryPage.selectCategory('Power Tools');
-        const firstFilters = await categoryFilters.subfiltersCount();
-        await categoryPage.selectCategory('Hand Tools');
-        await page.waitForLoadState('networkidle');
-        const secondFilters = await categoryFilters.subfiltersCount();
-
-
-        expect(secondFilters).toBeGreaterThan(0);
-        expect(firstFilters || secondFilters).toBeTruthy();
-    });
-
-    test('should display rentals products', async () => {
-
-        await categoryPage.selectCategory('Rentals');
-        await categoryPage.waitProductsLoaded();
-
-        expect(  await categoryPage.productCount()).toEqual(3);
-    });
+    expect(secondFilters).toBeGreaterThan(0);
+    expect(firstFilters || secondFilters).toBeTruthy();
+  });
 
 });

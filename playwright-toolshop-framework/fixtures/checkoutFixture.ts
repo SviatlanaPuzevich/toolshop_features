@@ -1,31 +1,30 @@
-import {ProductPage} from '../pages/ProductPage';
-import {BasketPage} from '../pages/BasketPage';
-import {CheckoutPage} from '../pages/CheckoutPage';
-import {CatalogPage} from "../pages/CatalogPage";
+import { mergeTests } from '@playwright/test';
+import { test as catalogTest } from './catalogFixture.js';
+import { test as productTest } from './productFixture.js';
+import { test as basketTest } from './basketFixture.js';
+import { CheckoutPage } from '../pages/CheckoutPage.js';
 
 export type CheckoutFixture = {
-    checkoutPage: CheckoutPage;
+  checkoutPage: CheckoutPage;
 };
 
-export const checkoutFixtures = {
-    checkoutPage: async ({ page }, use) => {
-        const catalogPage = new CatalogPage(page);
-        await catalogPage.open();
-        await catalogPage.waitProductsLoaded();
-        await catalogPage.selectFirstCard();
+const mergedTest = mergeTests(catalogTest, productTest, basketTest);
 
-        const productPage = new ProductPage(page);
-        await productPage.waitUntilProductLoaded();
-        await productPage.addToCart();
+export const test = mergedTest.extend<CheckoutFixture>({
+  checkoutPage: async ({ page, catalogPage, productPage, basketPage }, use) => {
+    await catalogPage.open();
+    await catalogPage.waitProductsLoaded();
+    await catalogPage.selectFirstCard();
 
-        const basketPage = new BasketPage(page);
-        await basketPage.open();
-        await basketPage.gotoCheckout();
+    await productPage.waitUntilProductLoaded();
+    await productPage.addToCart();
 
-        const checkoutPage = new CheckoutPage(page);
+    await basketPage.open();
+    await basketPage.gotoCheckout();
 
-        await use(checkoutPage);
-    },
-};
+    const checkoutPage = new CheckoutPage(page);
+    await use(checkoutPage);
+  },
+});
 
 export { expect } from '@playwright/test';

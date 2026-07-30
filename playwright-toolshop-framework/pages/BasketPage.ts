@@ -1,18 +1,19 @@
-import {Page} from '@playwright/test';
-import BasePage from "./BasePage";
+import { Locator, Page } from '@playwright/test';
+import BasePage from './BasePage.js';
 
 export class BasketPage extends BasePage {
-    readonly proceedButton = this.page.locator('[data-test="proceed-1"]');
+  readonly proceedButton: Locator;
 
-    constructor(page: Page) {
-        super(page);
-    }
+  constructor(page: Page) {
+    super(page);
+    this.proceedButton = this.page.locator('[data-test="proceed-1"]');
+  }
 
-    public async open() {
-        return await this.page.goto('checkout');
-    }
+  public async open() {
+    return await this.page.goto('checkout');
+  }
 
-    async gotoCheckout(): Promise<void> {
-        await this.proceedButton.click();
-    }
+  async gotoCheckout(): Promise<void> {
+    await this.proceedButton.click();
+  }
 }

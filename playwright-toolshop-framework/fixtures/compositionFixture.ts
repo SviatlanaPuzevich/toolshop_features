@@ -1,10 +1,7 @@
-import { test as base } from '@playwright/test';
-import { registerFixtures, type RegisterFixtures } from './registerFixture';
-import { checkoutFixtures, type CheckoutFixture } from './checkoutFixture';
+import { mergeTests } from '@playwright/test';
+import { test as registerTest } from './registerFixture.js';
+import { test as checkoutTest } from './checkoutFixture.js';
 
-export const test = base.extend<RegisterFixtures & CheckoutFixture>({
-    ...registerFixtures,
-    ...checkoutFixtures,
-});
+export const test = mergeTests(registerTest, checkoutTest);
 
 export { expect } from '@playwright/test';
