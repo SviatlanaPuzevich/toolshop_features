@@ -1,4 +1,4 @@
-export default class RegisterPage {
+class RegisterPage {
   open() {
     cy.visit('/auth/register');
   }
@@ -94,3 +94,5 @@ export default class RegisterPage {
     this.registerButton().click();
   }
 }
+
+export const registerPage = new RegisterPage();

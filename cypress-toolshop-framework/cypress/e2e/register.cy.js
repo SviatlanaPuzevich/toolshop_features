@@ -1,11 +1,9 @@
-import RegisterPage from '../pages/RegisterPage';
+import {registerPage} from '../pages/RegisterPage';
 import { getBirthDateWithOffset } from '../utils/dateHelper';
 
 describe('User Registration', () => {
-  let registerPage;
 
   beforeEach(() => {
-    registerPage = new RegisterPage();
     registerPage.open();
   });
 

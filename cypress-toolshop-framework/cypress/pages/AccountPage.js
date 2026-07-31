@@ -1,4 +1,4 @@
-export default class AccountPage {
+class AccountPage {
   navMenu() {
     return cy.get('[data-test="nav-menu"]');
   }
@@ -16,3 +16,5 @@ export default class AccountPage {
     cy.visit('/account');
   }
 }
+
+export const accountPage = new AccountPage();

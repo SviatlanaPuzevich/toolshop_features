@@ -1,13 +1,10 @@
-import AccountPage from '../pages/AccountPage.js';
-import LoginPage from '../pages/LoginPage.js';
+import {accountPage} from '../pages/AccountPage.js';
+import {loginPage} from '../pages/LoginPage.js';
 
 describe('User Sign In', () => {
-  let loginPage;
   let user;
 
   before(() => {
-    loginPage = new LoginPage();
-
     cy.registerUser().then((createdUser) => {
       user = createdUser;
     });
@@ -20,7 +17,6 @@ describe('User Sign In', () => {
   it('Successful login with valid credentials', () => {
     cy.login(user);
     cy.url().should('include', '/account');
-    const accountPage = new AccountPage();
     accountPage.signOut();
   });
 

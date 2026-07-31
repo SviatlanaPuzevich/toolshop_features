@@ -1,4 +1,4 @@
-export default class LoginPage {
+class LoginPage {
   open() {
     cy.visit('/auth/login');
   }
@@ -19,3 +19,5 @@ export default class LoginPage {
     return cy.get(`[data-test="${name}-error"]`);
   }
 }
+
+export const loginPage = new LoginPage();
