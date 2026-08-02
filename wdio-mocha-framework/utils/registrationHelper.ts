@@ -11,7 +11,6 @@ export async function createUser(): Promise<User> {
   return { email, password };
 }
 
-
 export function generateStrongPassword(length: number = 12): string {
   const minLength = Math.max(8, length);
 

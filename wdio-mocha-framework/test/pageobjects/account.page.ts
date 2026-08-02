@@ -1,10 +1,8 @@
 import Page from './page.js';
 
-
 class AccountPage extends Page {
-
   public get navMenu() {
-    return this.getElementByDataTestAttribute("nav-menu");
+    return this.getElementByDataTestAttribute('nav-menu');
   }
 
   public get signOutItem() {

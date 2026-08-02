@@ -1,7 +1,7 @@
 import Page from './page.js';
 
 class HomePage extends Page {
-  open(): Promise<WebdriverIO.Request | void> {
+  open() {
     return super.open('');
   }
 

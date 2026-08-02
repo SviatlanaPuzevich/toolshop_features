@@ -75,14 +75,10 @@ class BasketPage extends Page {
   }
 
   async removeAllProducts() {
-    try {
       await browser.waitUntil(async () => (await this.removeButtons.length) > 0, {
         timeout: 3000,
         timeoutMsg: 'There are no buttons',
       });
-    } catch (error) {
-      return;
-    }
 
     while ((await this.removeButtons.length) > 0) {
       const firstButton = this.removeButtons[0];

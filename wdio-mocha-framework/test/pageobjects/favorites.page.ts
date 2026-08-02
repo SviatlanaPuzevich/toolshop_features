@@ -1,7 +1,6 @@
 import Page from './page';
 
 class FavoritesPage extends Page {
-
   open() {
     return super.open('account/favorites');
   }
@@ -35,15 +34,10 @@ class FavoritesPage extends Page {
   }
 
   async removeAllFavorites() {
-
     let buttons = this.removeButtons;
 
-    while (await buttons.length > 0) {
-
+    while ((await buttons.length) > 0) {
       await buttons[0].click();
-
-      await browser.pause(300);
-
       buttons = this.removeButtons;
     }
   }

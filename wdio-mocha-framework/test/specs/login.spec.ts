@@ -42,17 +42,15 @@ describe('User Sign In', () => {
     });
   });
 
+  it(`Login fails with invalid credentials password)`, async () => {
+    await LoginPage.login(user.email, 'wrongPassword123!');
 
-    it(`Login fails with invalid credentials password)`, async () => {
+    const errorElement = LoginPage.getError('login');
+    await errorElement.waitForDisplayed({ timeout: 3000 });
 
-      await LoginPage.login(user.email, "wrongPassword123!");
-
-      const errorElement = LoginPage.getError('login');
-      await errorElement.waitForDisplayed({ timeout: 3000 });
-
-      const isDisplayed = await errorElement.isDisplayed();
-      expect(isDisplayed).to.be.true;
-    });
+    const isDisplayed = await errorElement.isDisplayed();
+    expect(isDisplayed).to.be.true;
+  });
 
   it(`Login fails with invalid credentials email`, async () => {
     await LoginPage.login('unknownEmail@example.com', 'wrongPassword123!');

@@ -6,21 +6,20 @@ import globals from 'globals';
 export default [
   js.configs.recommended,
 
+  wdio.configs['flat/recommended'],
+
   {
-    files: ['**/*.js'],
+    files: ['**/*.js', '**/*.ts'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
       globals: {
         ...globals.node,
         ...globals.mocha,
+        ...globals.browser,
       },
     },
-    plugins: {
-      wdio,
-    },
     rules: {
-      ...wdio.configs.recommended.rules,
       'no-unused-vars': 'warn',
       'no-console': 'off',
     },

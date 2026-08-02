@@ -28,7 +28,7 @@ describe('Basket Management', () => {
 
   afterEach(async () => {
     await BasketPage.removeAllProducts();
-  })
+  });
 
   describe('Basket display', () => {
     it('should display basket products correctly', async () => {

@@ -1,3 +1,4 @@
+/* global WebdriverIO */
 export const config: WebdriverIO.Config = {
   //
   // ====================
@@ -22,9 +23,9 @@ export const config: WebdriverIO.Config = {
   // The path of the spec files will be resolved relative from the directory of
   // of the config file unless it's absolute.
   //
-  // specs: ['./test/specs/**/*.ts'],
+  specs: ['./test/specs/**/*.ts'],
   // Patterns to exclude.
-  specs: ['./test/specs/**/basket.ts'],
+  // specs: ['./test/specs/**/basket.ts'],
   exclude: [
     // 'path/to/excluded/files'
   ],
@@ -129,7 +130,17 @@ export const config: WebdriverIO.Config = {
   // Test reporter for stdout.
   // The only one supported by default is 'dot'
   // see also: https://webdriver.io/docs/dot-reporter
-  reporters: ['spec'],
+  reporters: [
+    'spec',
+    [
+      'allure',
+      {
+        outputDir: './allure-results',
+        disableWebdriverStepsReporting: true,
+        disableWebdriverScreenshotsReporting: false,
+      },
+    ],
+  ],
 
   // Options to be passed to Mocha.
   // See the full list at http://mochajs.org/
@@ -232,8 +243,11 @@ export const config: WebdriverIO.Config = {
    * @param {boolean} result.passed    true if test has passed, otherwise false
    * @param {object}  result.retries   information about spec related retries, e.g. `{ attempts: 0, limit: 0 }`
    */
-  // afterTest: function(test, context, { error, result, duration, passed, retries }) {
-  // },
+  afterTest: async function (test, context, { passed }) {
+    if (!passed) {
+      await browser.takeScreenshot();
+    }
+  },
 
   /**
    * Hook that gets executed after the suite has ended

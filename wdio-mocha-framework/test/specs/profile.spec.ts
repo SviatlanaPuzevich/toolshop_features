@@ -19,7 +19,6 @@ describe('User Profile Management', () => {
     await ProfilePage.open();
   });
 
-
   describe('Personal Information', () => {
     it('should display prefilled profile data', async () => {
       expect(await ProfilePage.firstName.getValue()).to.equal('John');
@@ -64,9 +63,8 @@ describe('User Profile Management', () => {
       { id: 'city', field: 'City' },
     ];
 
-    requiredFields.forEach(({field}) => {
+    requiredFields.forEach(({ field }) => {
       it(`should validate required field ${field}`, async () => {
-
         await ProfilePage.clearFiled(field);
 
         await ProfilePage.submitProfile();
@@ -79,7 +77,6 @@ describe('User Profile Management', () => {
         expect(await ProfilePage.errorAlert.isDisplayed()).to.be.true;
       });
     });
-
   });
 
   describe('Password Change', () => {
