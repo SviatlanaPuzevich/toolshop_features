@@ -1,13 +1,15 @@
 import { Page } from '@playwright/test';
-import BasePage from './BasePage.js';
 
-export class ProductPage extends BasePage {
-  readonly addToCartButton = this.page.locator('[data-test="add-to-cart"]');
-  readonly productDescription = this.page.locator('[data-test="product-description"]');
-  readonly cartQuantity = this.page.locator('[data-test="cart-quantity"]');
+export class ProductPage {
+  readonly addToCartButton;
+  readonly productDescription;
+  readonly cartQuantity;
 
-  constructor(page: Page) {
-    super(page);
+  constructor(readonly page: Page) {
+    this.page = page;
+    this.addToCartButton = this.page.locator('[data-test="add-to-cart"]');
+    this.productDescription = this.page.locator('[data-test="product-description"]');
+    this.cartQuantity = this.page.locator('[data-test="cart-quantity"]');
   }
 
   async waitUntilProductLoaded() {

@@ -11,7 +11,7 @@ export type RegisterFixtures = {
 };
 
 export const test = base.extend<RegisterFixtures>({
-  registrationPage: async({page}, use) =>{
+  registrationPage: async ({ page }, use) => {
     const registerPage = new RegisterPage(page);
     await registerPage.open();
     await use(registerPage);

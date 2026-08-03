@@ -1,4 +1,6 @@
 import { expect, Locator, Page } from '@playwright/test';
+import { CategoryFilters } from '../components/CategoryFilters.js';
+import { SearchFilter } from '../components/SearchFilter.js';
 
 export class CatalogPage {
   readonly categorySelect: Locator;
@@ -7,12 +9,17 @@ export class CatalogPage {
   readonly productNames: Locator;
   readonly searchCountText: Locator;
 
+  readonly categoryFilters: CategoryFilters;
+  readonly searchFilter: SearchFilter;
+
   constructor(private readonly page: Page) {
     this.categorySelect = this.page.locator('[data-test="nav-categories"]');
     this.categoryOptions = this.page.locator('[data-test="nav-categories"] + ul li');
     this.productCards = this.page.locator('.card:not(.skeleton)');
     this.productNames = this.page.locator('[data-test="product-name"]');
     this.searchCountText = this.page.locator('[data-test="search-result-count"]');
+    this.categoryFilters = new CategoryFilters(this.page);
+    this.searchFilter = new SearchFilter(this.page);
   }
 
   async open() {

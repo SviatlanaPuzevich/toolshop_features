@@ -1,13 +1,13 @@
-import { Page, Locator } from '@playwright/test';
-import BasePage from './BasePage.js';
+import { Locator, Page } from '@playwright/test';
 
-export class LoginPage extends BasePage {
+export class LoginPage {
   readonly email: Locator;
   readonly password: Locator;
   readonly submitButton: Locator;
+  readonly page: Page;
 
   constructor(page: Page) {
-    super(page);
+    this.page = page;
     this.email = page.locator('#email');
     this.password = page.locator('#password');
     this.submitButton = page.locator('[data-test="login-submit"]');

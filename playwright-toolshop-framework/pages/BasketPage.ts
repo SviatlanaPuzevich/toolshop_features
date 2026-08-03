@@ -1,11 +1,11 @@
 import { Locator, Page } from '@playwright/test';
-import BasePage from './BasePage.js';
 
-export class BasketPage extends BasePage {
+export class BasketPage {
   readonly proceedButton: Locator;
+  readonly page: Page;
 
   constructor(page: Page) {
-    super(page);
+    this.page = page;
     this.proceedButton = this.page.locator('[data-test="proceed-1"]');
   }
 

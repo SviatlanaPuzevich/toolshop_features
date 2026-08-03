@@ -1,8 +1,8 @@
 import { test, expect } from '../fixtures/registerFixture.js';
 import { getBirthDateWithOffset } from '../utils/dateHelper.js';
+import { RegisterFieldName } from '../pages/RegisterPage.js';
 
 test.describe('User Registration', () => {
-
   test.describe('Successful registration', () => {
     test('should register user successfully', async ({ page, registrationPage }) => {
       await registrationPage.fillValidForm();
@@ -13,10 +13,10 @@ test.describe('User Registration', () => {
   });
 
   test.describe('Required fields validation (Name fields)', () => {
-    const requiredFields = ['first_name', 'last_name'];
+    const requiredFields: RegisterFieldName[] = ['first_name', 'last_name'];
 
     for (const field of requiredFields) {
-      test(`should validate required field ${field}`, async ({registrationPage}) => {
+      test(`should validate required field ${field}`, async ({ registrationPage }) => {
         await registrationPage.fillValidForm();
         await registrationPage.clearField(field);
         await registrationPage.submit();
@@ -28,7 +28,7 @@ test.describe('User Registration', () => {
   });
 
   test.describe('Required fields validation (Other fields)', () => {
-    const requiredFields = [
+    const requiredFields: RegisterFieldName[] = [
       'dob',
       'street',
       'house_number',
@@ -41,7 +41,7 @@ test.describe('User Registration', () => {
     ];
 
     for (const field of requiredFields) {
-      test(`should validate required field ${field}`, async ({registrationPage}) => {
+      test(`should validate required field ${field}`, async ({ registrationPage }) => {
         await registrationPage.fillValidForm();
         await registrationPage.clearField(field);
         await registrationPage.submit();
@@ -53,14 +53,14 @@ test.describe('User Registration', () => {
   });
 
   test.describe('Invalid field format validation', () => {
-    const testCases = [
+    const testCases: { field: string; name: RegisterFieldName; value: string }[] = [
       { field: 'Birth day', name: 'dob', value: '123' },
       { field: 'Phone', name: 'phone', value: '+370222' },
       { field: 'Email', name: 'email', value: 'email.com' },
     ];
 
     for (const { field, name, value } of testCases) {
-      test(`should show validation error for ${field}`, async ({registrationPage}) => {
+      test(`should show validation error for ${field}`, async ({ registrationPage }) => {
         await registrationPage.fillValidForm();
 
         const inputField = registrationPage.getField(name);

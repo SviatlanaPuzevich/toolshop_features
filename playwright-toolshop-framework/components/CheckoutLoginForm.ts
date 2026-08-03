@@ -6,8 +6,8 @@ export class CheckoutLoginForm {
   readonly loginButton;
 
   constructor(private readonly page: Page) {
-    this.email = this.page.locator('[data-test="email"]');
-    this.password = this.page.locator('[data-test="password"]');
+    this.email = this.page.locator('#email');
+    this.password = this.page.locator('#password');
     this.loginButton = this.page.locator('[data-test="login-submit"]');
   }
 

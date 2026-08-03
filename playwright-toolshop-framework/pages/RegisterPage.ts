@@ -1,7 +1,19 @@
-import { Page, Locator } from '@playwright/test';
-import BasePage from './BasePage.js';
+import { Locator, Page } from '@playwright/test';
+export type RegisterFieldName =
+  | 'first_name'
+  | 'last_name'
+  | 'dob'
+  | 'street'
+  | 'house_number'
+  | 'postal_code'
+  | 'city'
+  | 'state'
+  | 'country'
+  | 'phone'
+  | 'email'
+  | 'password';
 
-export class RegisterPage extends BasePage {
+export class RegisterPage {
   readonly firstName: Locator;
   readonly lastName: Locator;
   readonly dob: Locator;
@@ -16,8 +28,8 @@ export class RegisterPage extends BasePage {
   readonly password: Locator;
   readonly registerButton: Locator;
 
-  constructor(page: Page) {
-    super(page);
+  constructor(readonly page: Page) {
+    this.page = page;
     this.firstName = page.locator('#first_name');
     this.lastName = page.locator('#last_name');
     this.dob = page.locator('#dob');
@@ -37,7 +49,7 @@ export class RegisterPage extends BasePage {
     return await this.page.goto('auth/register');
   }
 
-  getField(name: string): Locator {
+  getField(name: RegisterFieldName): Locator {
     const fields: Record<string, Locator> = {
       first_name: this.firstName,
       last_name: this.lastName,
@@ -56,7 +68,7 @@ export class RegisterPage extends BasePage {
     return fields[name];
   }
 
-  async clearField(name: string) {
+  async clearField(name: RegisterFieldName) {
     const field = this.getField(name);
     await field.fill('');
     // Blur so Angular marks the control as touched and renders the required-field
@@ -83,5 +95,17 @@ export class RegisterPage extends BasePage {
 
   async submit() {
     await this.registerButton.click();
+  }
+
+  public getError(fieldId: string): Locator {
+    return this.page.locator(`[data-test="${fieldId}-error"]`);
+  }
+
+  public getErrorElementById(fieldId: string): Locator {
+    return this.page.locator(`#${fieldId}-error`);
+  }
+
+  public getElementByDataTestAttribute(attribute: string): Locator {
+    return this.page.locator(`[data-test="${attribute}"]`);
   }
 }
