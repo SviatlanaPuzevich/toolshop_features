@@ -14,7 +14,7 @@ const mergedTest = mergeTests(
 );
 
 export const test = mergedTest.extend<{ onCheckoutPage: void }>({
-    onCheckoutPage: [async ({ catalogPage, productPage, basketPage }, use) => {
+    onCheckoutPage: [async ({ registeredUser, catalogPage, productPage, basketPage }, use) => {
         await catalogPage.open();
         await catalogPage.waitProductsLoaded();
         await catalogPage.selectFirstCard();

@@ -4,15 +4,10 @@ import { generateEmail } from '../utils/loginHelper.js';
 test.describe('Checkout', () => {
   test('existing user signs in during checkout', async ({ registeredUser, basketPage, checkoutPage }) => {
 
-    // await basketPage.gotoCheckout();
-    // console.log(await basketPage.page.url());
-    // await basketPage.proceedButton.click();
-    // console.log(await checkoutPage.page.url());
     await Promise.all([
       checkoutPage.loginForm.login(registeredUser.email, registeredUser.password),
       checkoutPage.waitWhileUserLogged(),
     ]);
-    // console.log(await checkoutPage.page.url());
 
     await expect(checkoutPage.checkoutMessage).toBeVisible();
   });
