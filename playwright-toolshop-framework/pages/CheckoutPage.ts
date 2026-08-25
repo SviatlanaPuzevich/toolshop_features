@@ -31,8 +31,8 @@ export class CheckoutPage {
   }
 
   async waitWhileUserLogged() {
-      return this.page.waitForResponse(
-          (response) => response.url().includes('users/login') && response.status() === 200,
-      );
+    return this.page.waitForResponse(
+      (response) => response.url().includes('users/login') && response.status() === 200,
+    );
   }
 }
