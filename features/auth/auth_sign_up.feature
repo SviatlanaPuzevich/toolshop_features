@@ -7,7 +7,6 @@ Feature: User's registration
     Given user fills all required fields with valid data
     When submits the form
     Then account is created successfully
-    And account is created successfully
 
   Scenario Outline: Required fields validation
     Given all required fields are filled with valid data

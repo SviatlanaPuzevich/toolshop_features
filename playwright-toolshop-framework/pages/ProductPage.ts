@@ -1,0 +1,25 @@
+import { Page } from '@playwright/test';
+
+export class ProductPage {
+  readonly addToCartButton;
+  readonly productDescription;
+  readonly cartQuantity;
+
+  constructor(readonly page: Page) {
+    this.page = page;
+    this.addToCartButton = this.page.locator('[data-test="add-to-cart"]');
+    this.productDescription = this.page.locator('[data-test="product-description"]');
+    this.cartQuantity = this.page.locator('[data-test="cart-quantity"]');
+  }
+
+  async waitUntilProductLoaded() {
+    await this.productDescription.waitFor({ state: 'visible' });
+  }
+
+  async addToCart() {
+    await this.addToCartButton.click();
+    // Wait for the item to be persisted (nav cart badge updates) before navigating
+    // away, otherwise the checkout page loads with an empty cart.
+    await this.cartQuantity.waitFor({ state: 'visible' });
+  }
+}
