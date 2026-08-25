@@ -1,0 +1,36 @@
+{
+  "name": "cypress-toolshop-framework",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "npx prettier . --write",
+    "format:check": "prettier . --check",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "test:chrome": "cypress run --headless --browser chrome",
+    "test:firefox": "cypress run --headless --browser firefox",
+    "test:edge": "cypress run --headless --browser edge",
+    "test:all": "npm run test:chrome && npm run test:firefox && npm run test:edge",
+    "report:merge": "mochawesome-merge cypress/reports/*.json -o cypress/reports/report.json",
+    "report:html": "marge cypress/reports/report.json -f index -o cypress/reports/html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "cypress": "^15.18.1",
+    "cypress-mochawesome-reporter": "^4.0.2",
+    "cypress-multi-reporters": "^2.0.5",
+    "eslint": "^10.8.0",
+    "eslint-plugin-cypress": "^6.4.3",
+    "globals": "^17.8.0",
+    "mochawesome": "^7.1.4",
+    "mochawesome-merge": "^5.1.1",
+    "mochawesome-report-generator": "^6.3.2"
+  }
+}
