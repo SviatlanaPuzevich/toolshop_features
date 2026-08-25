@@ -1,8 +1,7 @@
-import RegisterPage from '../pages/RegisterPage.js';
-import LoginPage from '../pages/LoginPage.js';
+import {registerPage} from '../pages/RegisterPage.js';
+import {loginPage} from '../pages/LoginPage.js';
 
 Cypress.Commands.add('fillRegistrationForm', (user = {}) => {
-  const page = new RegisterPage();
 
   const defaults = {
     firstName: 'John',
@@ -21,18 +20,18 @@ Cypress.Commands.add('fillRegistrationForm', (user = {}) => {
 
   const data = { ...defaults, ...user };
 
-  page.firstName().type(data.firstName);
-  page.lastName().type(data.lastName);
-  page.dob().type(data.dob);
-  page.street().type(data.street);
-  page.houseNumber().type(data.houseNumber);
-  page.postcode().type(data.postcode);
-  page.city().type(data.city);
-  page.state().type(data.state);
-  page.country().select(data.country);
-  page.phone().type(data.phone);
-  page.email().type(data.email);
-  page.password().type(data.password);
+  registerPage.firstName().type(data.firstName);
+  registerPage.lastName().type(data.lastName);
+  registerPage.dob().type(data.dob);
+  registerPage.street().type(data.street);
+  registerPage.houseNumber().type(data.houseNumber);
+  registerPage.postcode().type(data.postcode);
+  registerPage.city().type(data.city);
+  registerPage.state().type(data.state);
+  registerPage.country().select(data.country);
+  registerPage.phone().type(data.phone);
+  registerPage.email().type(data.email);
+  registerPage.password().type(data.password);
 
   return cy.wrap(data);
 });
@@ -41,22 +40,20 @@ Cypress.Commands.add('registerUser', (user = {}) => {
   cy.visit('/auth/register');
 
   return cy.fillRegistrationForm(user).then((data) => {
-    const page = new RegisterPage();
-    page.submit();
+    registerPage.submit();
     cy.url().should('include', '/auth/login');
     return cy.wrap(data);
   });
 });
 
 Cypress.Commands.add('login', (user) => {
-  const page = new LoginPage();
-  page.email().clear();
+  loginPage.email().clear();
   if (user.email) {
-    page.email().type(user.email);
+    loginPage.email().type(user.email);
   }
-  page.password().clear();
+  loginPage.password().clear();
   if (user.password) {
-    page.password().type(user.password);
+    loginPage.password().type(user.password);
   }
-  page.submit().click();
+  loginPage.submit().click();
 });
